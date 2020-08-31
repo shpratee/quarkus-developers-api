@@ -27,7 +27,77 @@ If your endpoints work with JSON format y“ou will need the quarkus-resteasy-js
 
 ## Dependency  injection
 
-Add @Inject annotation on the component needs be injected. The component being injected must be anotated with @ApplicationScoped
+Add @Inject annotation on the component needs be injected. The component being injected must be annotated with @ApplicationScoped
+
+## Properties configuration
+Eclipse MicroProfile Configuration drives the properties configuration for Quarkus
+
+1. The properties can be defined in "application.properties" present in resources folder.
+2. Quarkus supports YAML as well for which, an extension will need be added
+```
+./mvnw quarkus:add-extension -Dextension="config-yaml"
+```
+In this case the name of the properties file could be application.yaml or application.yml
+3. Profiles are supported with '%' prefixed before the profile name. 'dev', 'test' and 'prod' are three built-in profiles. And if not specified one, prod comes as the default context for a property.
+You can specify the profile that you would want to use beyond the built-ins by specifying the property mentioned below
+```
+./mvnw -Dquarkus.profile=staging
+
+%{profile}.config.key=value
+%staging.quarkus.http.port=8081
+```
+4. Properties can be accessed programmatically by injecting org.eclipse.microprofile.config.Config
+```
+@Inject
+Config config;
+
+public String hello(){
+    config.getPropertyNames().forEach(
+        p -> System.out.println(p));
+}
+```
+5. Config class can be accessed using ConfigProvider.getConfig() also.
+6. Properties in the application.properties can be overwritten by System properties using '-D' or environment variables. System Properties have more priority than environment variables.
+
+## Logger Configuration
+The default logging configuration can be changed through properties
+```
+quarkus.log.level=DEBUG
+```
+Enable storing logs in a file. While in development and working out of the source directory, your logging file will be in 'target' directory
+```
+quarkus.log.file.enable=true
+```
+Quarkus by default supports below Logging libraries
+``
+JDK java.util.logging
+JBoss Logging
+SLF4J
+Apache Commons Logging
+``
+Configure logging properties per categories. Categories are represented by class location(the package, subpackages, where they are defined)
+``
+quarkus.log.category."com.demo.api.developers".level=WARNING
+``
+Centrally logging. Quarkus supports JSON and GELF(Graylog Extended Log Format)-understood by three most centralized log systems
+- Graylog (MongoDB, ElasticSearch, Graylog)
+- ELK (ElasticSearch, Logstash, Kibana)
+- EFK (ElasticSearch, Fluentd, Kibana)
+Input plugins will have to be configured on the basis of what you configure the los to be sent to.
+
+Enable respective extensions for each format type. 
+```
+./mvnw quarkus:add-extension -Dextension="logging-json"
+./mvnw quarkus:add-extension -Dextension="logging-gelf"
+```
+Quarkus supports syslog format by default without requiring to add any extension.
+```
+quarkus.log.syslog.enable=true
+quarkus.log.syslog.endpoint=localhost:5140
+quarkus.log.syslog.protocol=udp
+quarkus.log.syslog.app-name=quarkus
+quarkus.log.syslog.hostname=quarkus-test”
+```
 
 ## Packaging and running the application
 
