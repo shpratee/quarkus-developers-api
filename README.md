@@ -25,6 +25,10 @@ If your endpoints work with JSON format y“ou will need the quarkus-resteasy-js
 ./mvnw quarkus:add-extension -Dextensions="quarkus-resteasy-jackson"
 ```
 
+## Dependency  injection
+
+Add @Inject annotation on the component needs be injected. The component being injected must be anotated with @ApplicationScoped
+
 ## Packaging and running the application
 
 The application can be packaged using `./mvnw package`.
