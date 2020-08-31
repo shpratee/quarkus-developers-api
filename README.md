@@ -18,6 +18,13 @@ You can run your application in dev mode that enables live coding using:
 ./mvnw quarkus:dev
 ```
 
+## Injecting JSON's support
+
+If your endpoints work with JSON format y“ou will need the quarkus-resteasy-jsonb or quarkus-resteasy-jackson extension in your project”
+```
+./mvnw quarkus:add-extension -Dextensions="quarkus-resteasy-jackson"
+```
+
 ## Packaging and running the application
 
 The application can be packaged using `./mvnw package`.
