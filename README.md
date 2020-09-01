@@ -159,10 +159,40 @@ Package the build and build a docker image from project's root
 ./mvnw clean package
 
 docker build -f src/main/docker/Dockerfile.jvm -t developers-api:1.0 .
-```
 
 The container can be started by running the following:
-```
+
 docker run -it --rm -p 8080:8080 developers-api:1.0
-``` 
+```
+
+## Building a Docker container for native executable
+To generate a container for running a Quarkus native executable, you can use the Dockerfile.native file to build the container.
+
+To build the Docker image, you need to create a native file that can be run in a Docker container. For this reason, don’t use local GraalVM to build the native executable because the result file will be specific to your operating system and will not be able to run inside a container.
+
+To create an executable that will run in a container, use the following command in your terminal:
+```
+./mvnw clean package -Pnative -Dquarkus.native.container-build=true
+
+docker build -f src/main/docker/Dockerfile.native -t developers-api-native:1.0 .
+
+The container can be started by running the following:
+
+docker run -it --rm -p 8080:8080 developers-api-native:1.0
+```
+
+## Test the running containers
+```
+docker ps --> running containers
+
+docker exec -it <CONTAINER_ID> curl -i http://localhost:8080/developers/hello
+
+Response:
+HTTP/1.1 200 OK
+Content-Length: 10
+Content-Type: text/plain;charset=UTF-8
+
+Hello All!
+```
+
 
