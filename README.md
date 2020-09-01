@@ -104,17 +104,38 @@ quarkus.log.syslog.app-name=quarkus
 quarkus.log.syslog.hostname=quarkus-test”
 ```
 
-## Packaging and running the application
+## Packaging and creating a runnable jar (JVM mode)
+You want to create a runnable JAR file to be distributed/containerized into a machine with a JVM installed.
+The application can be packaged using `./mvnw clean package`.
 
-The application can be packaged using `./mvnw package`.
-It produces the `developers-api-1.0-SNAPSHOT-runner.jar` file in the `/target` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/lib` directory.
+It produces
+1. the `developers-api-1.0-SNAPSHOT-runner.jar` file in the `/target` directory
+2. location of dependencies
+3. Lib folder with application dependencies
+
+If you want to deploy the application, it is important to copy together the executable jar with the 'lib' directory. 
 
 The application is now runnable using `java -jar target/developers-api-1.0-SNAPSHOT-runner.jar`.
 
-## Creating a native executable
+Running Quarkus in this way is known as running Quarkus in the `JVM mode`.
 
-You can create a native executable using: `./mvnw package -Pnative`.
+## Packaging and creating a über JAR (JVM mode)
+Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/lib` directory.
+
+To create an über-JAR, a JAR that contains your code runnable classes and all required dependencies, you need to configure Quarkus accordingly in the application.properties file by setting quarkus.package.uber-jar to true.
+``
+quarkus.package.uber-jar=true
+``
+
+## Building a native executable
+You want to build your Quarkus application as a native executable jar that is ideal for containers and serverless loads.
+Quarkus relies upon GraalVM to build a java application as a native executable.
+
+1. Install GraalVM from: https://www.graalvm.org/docs/getting-started-with-graalvm/
+2. Set GRAALVM_HOME to <GraalVM Dir>/Contents/Home
+3. Set PATH to <GraalVM Dir>/Contents/Home/bin
+4. Install "native-image" plugin `gu install native-image` - https://www.graalvm.org/docs/getting-started-with-graalvm/#native-images
+5. You can create a native executable using: `./mvnw package -Pnative`.
 
 Or, if you don't have GraalVM installed, you can run the native executable build in a container using: `./mvnw package -Pnative -Dquarkus.native.container-build=true`.
 
