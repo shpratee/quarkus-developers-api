@@ -143,3 +143,26 @@ Or, if you don't have GraalVM installed, you can run the native executable build
 You can then execute your native executable with: `./target/developers-api-1.0-SNAPSHOT-runner`
 
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/building-native-image.
+
+## Building a Docker container for JAR file
+Use the Dockerfile.jvm file provided to build the container.
+
+When a Quarkus project is generated using any of the methods explained before, two Dockerfiles are created in src/main/docker: 
+1. one for generating a Docker container using Quarkus in the JVM mode
+2. another one for the native executable
+
+Pre-requisites:
+1. You have docker environment configured already, either locally or in any any pre-packaed environment like Minikube, K3d or KinD
+
+Package the build and build a docker image from the target
+```
+./mvnw clean package
+
+docker build -f src/main/docker/Dockerfile.jvm -t developers-api:1.0 .
+```
+
+The container can be started by running the following:
+```
+docker run -it --rm -p 8080:8080 developers-api:1.0
+``` 
+
