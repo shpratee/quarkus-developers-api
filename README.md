@@ -154,7 +154,7 @@ When a Quarkus project is generated using any of the methods explained before, t
 Pre-requisites:
 1. You have docker environment configured already, either locally or in any any pre-packaged environment like Minikube, K3d or KinD
 
-Package the build and build a docker image from the target
+Package the build and build a docker image from project's root
 ```
 ./mvnw clean package
 
