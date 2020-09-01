@@ -132,7 +132,8 @@ You want to build your Quarkus application as a native executable jar that is id
 Quarkus relies upon GraalVM to build a java application as a native executable.
 
 1. Install GraalVM from: https://www.graalvm.org/docs/getting-started-with-graalvm/
-2. Set GRAALVM_HOME to <GraalVM Dir>/Contents/Home
+2. Set GRAALVM_HOME environment variable to <GraalVM Dir>/Contents/Home
+    Example in macOS: export GRAALVM_HOME=/Library/Java/JavaVirtualMachines/graalvm-ce-java11-20.2.0/Contents/Home
 3. Set PATH to <GraalVM Dir>/Contents/Home/bin
 4. Install "native-image" plugin `gu install native-image` - https://www.graalvm.org/docs/getting-started-with-graalvm/#native-images
 5. You can create a native executable using: `./mvnw package -Pnative`.
